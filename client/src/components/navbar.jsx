@@ -1,25 +1,23 @@
 import { Link } from "react-router-dom";
+import { useAuth } from "../contexts/auth";
 
 const Navbar = () => {
+  const { user, logoutUser } = useAuth();
   return (
-    <nav>
-      <ul>
-        <li>
+    <nav className="flex justify-center items-center gap-4 py-4 bg-blue-500 text-white text-xl  ">
+      {user ? (
+        <>
           <Link to="/">home</Link>
-        </li>
-        <li>
-          {" "}
           <Link to="/notes">Notes</Link>
-        </li>
-        <li>
-          {" "}
+          <button onClick={logoutUser}>Logout</button>
+        </>
+      ) : (
+        <>
+          <Link to="/">home</Link>
           <Link to="/register">Register</Link>
-        </li>
-        <li>
-          {" "}
           <Link to="/login">login</Link>
-        </li>
-      </ul>
+        </>
+      )}
     </nav>
   );
 };
