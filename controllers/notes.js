@@ -1,8 +1,9 @@
 import Note from "../models/Note.js";
 
 export const getNotes = async (req, res) => {
+  const userId = req.userId;
   try {
-    const notes = await Note.find();
+    const notes = await Note.find({ userId });
     res.status(200).json({
       success: true,
       data: notes,
@@ -12,10 +13,17 @@ export const getNotes = async (req, res) => {
       success: false,
     });
   }
-  //   res.send("get all notes");
 };
 
 export const getNote = async (req, res) => {
+  // check if valid mongo id
+  //   if (!req.params.id.match(/^[0-9a-fA-F]{24}$/)) {
+  //     return res.status(400).json({
+  //       success: false,
+  //       error: "invalid note id",
+  //     });
+  //   }
+
   try {
     const note = await Note.findById(req.params.id);
     if (!note) {
@@ -26,7 +34,7 @@ export const getNote = async (req, res) => {
     }
     res.status(200).json({
       success: true,
-      data: notes,
+      data: note,
     });
   } catch (error) {
     res.status(400).json({
@@ -37,8 +45,9 @@ export const getNote = async (req, res) => {
 };
 
 export const createNote = async (req, res) => {
+  const userId = req.userId;
   try {
-    const note = await Note.create(req.body);
+    const note = await Note.create({ ...req.body, userId });
     res.status(201).json({
       success: true,
       data: note,
@@ -79,14 +88,14 @@ export const updateNote = async (req, res) => {
 
 export const deleteNote = async (req, res) => {
   try {
-    const note = await Note.findById(req.params.id);
+    const note = await Note.findByIdAndDelete(req.params.id);
     if (!note) {
       return res.status(400).json({
         success: false,
         error: "No note found",
       });
     }
-    await note.remove();
+
     res.status(200).json({
       success: true,
       data: {},
