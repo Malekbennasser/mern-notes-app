@@ -1,5 +1,5 @@
 import { useRef } from "react";
-import { useAuth } from "../../contexts/auth";
+import { useAuth } from "../../contexts/auth.jsx";
 const Register = () => {
   const registerRef = useRef(null);
   const { registerUser } = useAuth();

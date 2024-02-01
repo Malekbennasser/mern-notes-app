@@ -4,7 +4,9 @@ import { toast } from "react-toastify";
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(localStorage.getItem("token") || null);
+  const [user, setUser] = useState(
+    localStorage.getItem("token-userNote") || null
+  );
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -65,7 +67,7 @@ export const AuthProvider = ({ children }) => {
 
   const logoutUser = async () => {
     setUser(null);
-    localStorage.removeItem("token");
+    localStorage.removeItem("token-userNote");
     toast.success("user logged out successfully");
   };
 

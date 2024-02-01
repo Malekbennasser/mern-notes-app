@@ -8,6 +8,7 @@ import PrivateRouter from "./utils/PrivateRouter.jsx";
 import { useAuth } from "./contexts/auth";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import CreateNote from "./pages/CreateNote/index.jsx";
 
 const App = () => {
   const { user } = useAuth();
@@ -19,6 +20,7 @@ const App = () => {
       <Routes>
         <Route element={<PrivateRouter />}>
           <Route path="/notes" element={<Notes />} />
+          <Route path="/notes/create" element={<CreateNote />} />
         </Route>
 
         <Route path="/" element={<Home />} />
