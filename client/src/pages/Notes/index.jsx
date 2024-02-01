@@ -46,6 +46,17 @@ const Notes = () => {
           >
             <h1 className="text-2xl font-bold">{note.title}</h1>
             <p className="text-xl">{note.description}</p>
+            <button>
+              <Link
+                to={`/notes/update/${note._id}`}
+                className="bg-blue-500 text-white px-4 py-2 rounded-md"
+              >
+                Update Note
+              </Link>
+            </button>
+            <button className="bg-blue-500 text-white px-4 py-2 rounded-md">
+              Delete Note
+            </button>
           </div>
         ))}
       </div>
