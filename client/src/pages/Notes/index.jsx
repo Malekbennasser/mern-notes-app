@@ -1,11 +1,32 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "../../contexts/auth.jsx";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const Notes = () => {
   const [notes, setNotes] = useState([]);
   const [loading, setLoading] = useState(true);
   const { user } = useAuth();
+  const handleDeleteNote = async (id) => {
+    const res = await fetch(
+      `${import.meta.env.VITE_API_BASE_URL}/api/v1/notes/${id}`,
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${user}`,
+        },
+      }
+    );
+
+    const data = await res.json();
+
+    setNotes(notes.filter((note) => note._id !== id));
+    if (data.success) {
+      toast.success("Note deleted");
+    }
+  };
+
   const getAllNotes = async () => {
     const res = await fetch(
       `${import.meta.env.VITE_API_BASE_URL}/api/v1/notes`,
@@ -23,7 +44,6 @@ const Notes = () => {
 
     if (data.success) {
       setNotes(data.data);
-      console.log(data.data);
     }
   };
   useEffect(() => {
@@ -54,7 +74,10 @@ const Notes = () => {
                 Update Note
               </Link>
             </button>
-            <button className="bg-blue-500 text-white px-4 py-2 rounded-md">
+            <button
+              className="bg-blue-500 text-white px-4 py-2 rounded-md"
+              onClick={() => handleDeleteNote(note._id)}
+            >
               Delete Note
             </button>
           </div>
